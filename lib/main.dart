@@ -49,6 +49,12 @@ class _AlarmSetterPageState extends State<AlarmSetterPage> {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: _selectedTime,
+      helpText: 'Selecciona la hora de la alarma',
+      cancelText: 'Cancelar',
+      confirmText: 'Aceptar',
+      hourLabelText: 'Hora' ,
+      minuteLabelText: 'Minuto',
+      initialEntryMode: TimePickerEntryMode.input,
     );
     if (picked != null && picked != _selectedTime) {
       setState(() {
