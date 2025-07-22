@@ -52,7 +52,7 @@ class _AlarmSetterPageState extends State<AlarmSetterPage> {
       helpText: 'Selecciona la hora de la alarma',
       cancelText: 'Cancelar',
       confirmText: 'Aceptar',
-      hourLabelText: 'Hora' ,
+      hourLabelText: 'Hora',
       minuteLabelText: 'Minuto',
       initialEntryMode: TimePickerEntryMode.input,
     );
@@ -67,7 +67,15 @@ class _AlarmSetterPageState extends State<AlarmSetterPage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final timeFormatted = _selectedTime.format(context);
-    double radius = max(min(MediaQuery.of(context).size.width * 0.8, MediaQuery.of(context).size.height * 0.5),300) / 2;
+    double radius =
+        max(
+          min(
+            MediaQuery.of(context).size.width * 0.8,
+            MediaQuery.of(context).size.height * 0.5,
+          ),
+          300,
+        ) /
+        2;
 
     return Scaffold(
       appBar: AppBar(
@@ -101,10 +109,12 @@ class _AlarmSetterPageState extends State<AlarmSetterPage> {
                 onTap: _pickTime,
                 child: Container(
                   width: max(radius, 300),
-                  height: max(radius,300),
+                  height: max(radius, 300),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: theme.colorScheme.primary.withAlpha((0.1 * 255).toInt()),
+                    color: theme.colorScheme.primary.withAlpha(
+                      (0.1 * 255).toInt(),
+                    ),
                   ),
                   alignment: Alignment.center,
                   child: Text(
@@ -128,38 +138,46 @@ class _AlarmSetterPageState extends State<AlarmSetterPage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 32,
+                        vertical: 16,
+                      ),
                     ),
                     onPressed: () async {
                       final url = _urlController.text;
                       if (url.isNotEmpty) {
-                                                final hour = _selectedTime.hour.toString().padLeft(2, '0');
-                        final min = _selectedTime.minute.toString().padLeft(2, '0');
-                        final alarmUrl = 'http://${url}/set_alarm?hour=$hour&min=$min';
+                        final hour = _selectedTime.hour.toString().padLeft(
+                          2,
+                          '0',
+                        );
+                        final min = _selectedTime.minute.toString().padLeft(
+                          2,
+                          '0',
+                        );
+                        final alarmUrl =
+                            'http://$url/set_alarm?hour=$hour&min=$min';
                         try {
-                          await Future.delayed(const Duration(milliseconds: 100)); // For UI feedback
+                          await Future.delayed(
+                            const Duration(milliseconds: 100),
+                          ); // For UI feedback
                           final response = await http.get(Uri.parse(alarmUrl));
-                          if (!mounted) return; // Guard against using context if widget is disposed
+                          if (!mounted)
+                            return; // Guard against using context if widget is disposed
                           if (response.statusCode == 200) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                content: Text('¡Alarma establecida exitosamente!'),
+                                content: Text(
+                                  '¡Alarma establecida exitosamente!',
+                                ),
                                 duration: Duration(seconds: 2),
                               ),
                             );
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text('Error al establecer la alarma: ${response.statusCode}'),
-                                duration: const Duration(seconds: 2),
-                              ),
-                            );
-                          }
-                        }
-                        // ...existing code...} else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Error al establecer la alarma: ${response.statusCode}'),
+                                content: Text(
+                                  'Error al establecer la alarma: ${response.statusCode}',
+                                ),
                                 duration: const Duration(seconds: 2),
                               ),
                             );
@@ -183,7 +201,7 @@ class _AlarmSetterPageState extends State<AlarmSetterPage> {
                         );
                       }
                     },
-                    child: const Text('Establecer Alarma'),
+                    child: Text('Establecer Alarma'),
                   ),
                 ],
               ),
@@ -192,4 +210,5 @@ class _AlarmSetterPageState extends State<AlarmSetterPage> {
         ),
       ),
     );
-  }}
+  }
+}
