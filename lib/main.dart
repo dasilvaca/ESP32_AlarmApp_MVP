@@ -133,8 +133,9 @@ class _AlarmSetterPageState extends State<AlarmSetterPage> {
                     onPressed: () async {
                       final url = _urlController.text;
                       if (url.isNotEmpty) {
-                        final formattedTime = timeFormatted.replaceAll(':', '_');
-                        final alarmUrl = '$url/setAlarm/$formattedTime';
+                                                final hour = _selectedTime.hour.toString().padLeft(2, '0');
+                        final min = _selectedTime.minute.toString().padLeft(2, '0');
+                        final alarmUrl = 'http://${url}/set_alarm?hour=$hour&min=$min';
                         try {
                           await Future.delayed(const Duration(milliseconds: 100)); // For UI feedback
                           final response = await http.get(Uri.parse(alarmUrl));
@@ -147,6 +148,15 @@ class _AlarmSetterPageState extends State<AlarmSetterPage> {
                               ),
                             );
                           } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Error al establecer la alarma: ${response.statusCode}'),
+                                duration: const Duration(seconds: 2),
+                              ),
+                            );
+                          }
+                        }
+                        // ...existing code...} else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text('Error al establecer la alarma: ${response.statusCode}'),
